@@ -1,0 +1,58 @@
+﻿@model Test.Models.Orders
+@{
+    ViewBag.Title = "Orders";
+}
+@using (Html.BeginForm("Save", "Home", FormMethod.Post, new { enctype = "multipart/form-data" }))
+{
+    <table class="table">
+        <tbody>
+            <tr>
+                <td>
+                    @Html.TextBoxFor(model => model.SearchProvider, new { @class = "form-control", placeholder = "enter provider id" })
+                </td>
+                <td>
+                    <input type="button" value="Search" onclick="window.location='@Url.Action("Index", "Home", new { id = Model.oProviderId}, null)';" />
+                </td>
+            </tr>
+        </tbody>
+    </table>
+
+    <div class="row">
+        <div class="col-lg-6">
+            <div class="page-header">
+                <h1 id="tables">Orders</h1>
+            </div>
+        </div>
+    </div>
+
+    <table class="table">
+        <thead>
+            <tr><th>Id</th><th>Number</th><th>Date</th><th>Provider</th></tr>
+        </thead>
+        <tbody>
+            @foreach (var order in Model.lstOrder)
+            {
+                <tr><td><a href="@Url.Action("Index1", "Home", new { id = @order.Id}, null)">@order.Id</td><td>@order.Number</td><td>@order.Date</td><td>@order.ProviderId</td></tr>
+            }
+            <tr>
+                <td>@Html.TextAreaFor(model => model.countOrder, new { @class = "form-control", placeholder = "Enter Id", required = "", autofocus = "", @rows = 1 })</td>
+                <td>@Html.TextBoxFor(model => model.oNumber, new { @class = "form-control", placeholder = "Enter Number", required = "", autofocus = "", @rows = 1 })</td>
+                <td>@Html.TextBoxFor(model => model.oDate, new { @class = "form-control", placeholder = "Enter Date", required = "", autofocus = "", @rows = 1 })</td>
+                @if (Model.lstProvider != null)
+                {
+
+                    <td>@Html.DropDownListFor(model => model.oProviderId, new SelectList(Model.dicProvider, "Key", "Value"), new { @class = "selectpicker", style = "width: 500px" })</td>
+                }
+
+                else
+                {
+                    <td>@Html.TextBoxFor(model => model.tOrder.ProviderId, new { @class = "form-control", placeholder = "Enter ProviderId", required = "", autofocus = "", @rows = 1 })</td>
+                }
+            </tr>
+        </tbody>
+    </table>
+    <div class="form-group">
+        <button type="submit" value="Save" class="btn btn-default">Add</button>
+    </div>
+}
+
